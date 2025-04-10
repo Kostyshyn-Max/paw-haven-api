@@ -14,5 +14,7 @@ public class UserFavourite : AbstractEntity<int>
 
     [Column("pet_card_id")]
     [ForeignKey(nameof(PetCard))]
+    public int PetCardId { get; set; }
+
     public PetCard PetCard { get; set; }
 }

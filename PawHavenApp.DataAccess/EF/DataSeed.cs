@@ -36,4 +36,14 @@ public static class DataSeed
             new PetType { Id = (int)PetTypes.Other, Title = "Інші" },
         };
     }
+
+    public static IEnumerable<UserRole> GetUserRoles()
+    {
+        return new List<UserRole>
+        {
+            new UserRole { Id = (int)UserRoles.Admin, Name = Enum.GetName(UserRoles.Admin)! },
+            new UserRole { Id = (int)UserRoles.User, Name = Enum.GetName(UserRoles.User)! },
+            new UserRole { Id = (int)UserRoles.OrganisationOwner, Name = "Organisation Owner" },
+        };
+    }
 }

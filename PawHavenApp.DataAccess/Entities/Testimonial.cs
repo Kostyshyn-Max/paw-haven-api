@@ -14,13 +14,9 @@ public class Testimonial : AbstractEntity<int>
     [ForeignKey(nameof(User))]
     public Guid AuthorId { get; set; }
 
-    public User User { get; set; }
-
     [Column("organisation_id")]
     [ForeignKey(nameof(Organisation))]
-    public int OrganisationID { get; set; }
-
-    public Organisation Organisation { get; set; }
+    public int OrganisationId { get; set; }
 
     [Required]
     [Column("posted_date")]
@@ -29,4 +25,8 @@ public class Testimonial : AbstractEntity<int>
     [Required]
     [Column("rate")]
     public int Rate { get; set; }
+
+    public Organisation Organisation { get; set; }
+
+    public User User { get; set; }
 }
