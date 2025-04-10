@@ -18,6 +18,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Organisation> Organisations { get; set; }
 
+    public DbSet<OrganisationCategory> OrganisationCategories { get; set; }
+
     public DbSet<PetCard> PetCards { get; set; }
 
     public DbSet<PetPhoto> PetPhotos { get; set; }
@@ -32,4 +34,12 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<UserFavourite> UserFavourites { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<OrganisationCategory>().HasData(DataSeed.GetOgranisationCategories());
+        modelBuilder.Entity<HealthStatus>().HasData(DataSeed.GetHealthStatuses());
+        modelBuilder.Entity<PetType>().HasData(DataSeed.GetPetTypes());
+    }
 }
