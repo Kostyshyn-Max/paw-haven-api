@@ -18,7 +18,7 @@ public class Message : AbstractEntity<int>
 
     [Column("sender_id")]
     [ForeignKey(nameof(User))]
-    public Guid SenderID { get; set; }
+    public Guid SenderId { get; set; }
 
     public User User { get; set; }
 }

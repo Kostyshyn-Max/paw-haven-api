@@ -17,12 +17,13 @@ public class PetStory : AbstractEntity<int>
     [Column("likes")]
     public int Likes { get; set; }
 
+    [Column("photo_link")]
+    public string? Link { get; set; }
+
     [Column("author_id")]
     [ForeignKey(nameof(User))]
     public Guid AuthorId { get; set; }
 
     public User User { get; set; }
 
-    [Column("photo_link")]
-    public string? Link { get; set; }
 }

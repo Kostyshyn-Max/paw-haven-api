@@ -6,6 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 [Table("users")]
 public class User : AbstractEntity<Guid>
 {
+    [Column("role_id")]
+    [ForeignKey(nameof(UserRole))]
+    public int RoleId { get; set; }
+
     [Required]
     [Column("first_name")]
     public string FirstName { get; set; } = string.Empty;
@@ -41,4 +45,6 @@ public class User : AbstractEntity<Guid>
     [Required]
     [Column("registration_date")]
     public DateTime RegistrationDate { get; set; }
+
+    public UserRole UserRole { get; set; }
 }

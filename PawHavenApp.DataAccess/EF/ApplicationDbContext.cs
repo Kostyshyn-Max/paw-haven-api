@@ -34,6 +34,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<UserFavourite> UserFavourites { get; set; }
 
+    public DbSet<UserRole> UserRoles { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -41,5 +43,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<OrganisationCategory>().HasData(DataSeed.GetOgranisationCategories());
         modelBuilder.Entity<HealthStatus>().HasData(DataSeed.GetHealthStatuses());
         modelBuilder.Entity<PetType>().HasData(DataSeed.GetPetTypes());
+        modelBuilder.Entity<UserRole>().HasData(DataSeed.GetUserRoles());
     }
 }
