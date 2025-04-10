@@ -3,18 +3,17 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table("pet_types")]
-public class PetType : AbstractEntity<int>
+[Table("organisation_categories")]
+public class OrganisationCategory : AbstractEntity<int>
 {
     [Required]
     [Column("title")]
     public string Title { get; set; } = string.Empty;
 }
 
-public enum PetTypes
+public enum OrganisationCategories
 {
-    Cat = 1,
-    Dog = 2,
-    Reptile = 3,
-    Other = 4,
+    VetClinic = 1,
+    Shelter = 2,
+    Nursery = 3,
 }

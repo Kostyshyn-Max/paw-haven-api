@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("users")]
-public class User : AbstractEntity
+public class User : AbstractEntity<Guid>
 {
     [Required]
     [Column("first_name")]
@@ -19,7 +19,7 @@ public class User : AbstractEntity
     public string Email { get; set; } = string.Empty;
 
     [Required]
-    [Column("password_hasр")]
+    [Column("password_hash")]
     public string PasswordHash { get; set; } = string.Empty;
 
     [Required]
@@ -27,8 +27,8 @@ public class User : AbstractEntity
     public string PasswordSalt { get; set; } = string.Empty;
 
     [Required]
-    [Column("organisation_owner")]
-    public bool OrganisationOwner { get; set; }
+    [Column("is_organisation_owner")]
+    public bool IsOrganisationOwner { get; set; }
 
     [Required]
     [Column("refresh_token")]
