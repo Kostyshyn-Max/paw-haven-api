@@ -20,6 +20,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<PetCard> PetCards { get; set; }
 
+    public DbSet<PetPhoto> PetPhotos { get; set; }
+
     public DbSet<PetStory> PetStories { get; set; }
 
     public DbSet<PetType> PetTypes { get; set; }
