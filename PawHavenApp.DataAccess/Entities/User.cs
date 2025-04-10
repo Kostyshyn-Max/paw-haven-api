@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("users")]
-public class User : AbstractEntity
+public class User : AbstractEntity<Guid>
 {
     [Required]
     [Column("first_name")]

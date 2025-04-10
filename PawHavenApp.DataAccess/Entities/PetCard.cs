@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class PetCard : AbstractEntity
+public class PetCard : AbstractEntity<int>
 {
 
 }

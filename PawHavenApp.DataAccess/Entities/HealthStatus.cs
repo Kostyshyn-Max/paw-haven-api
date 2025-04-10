@@ -1,5 +1,5 @@
 ﻿namespace PawHavenApp.DataAccess.Entities;
 
-public class HealthStatus : AbstractEntity
+public class HealthStatus : AbstractEntity<int>
 {
 }
