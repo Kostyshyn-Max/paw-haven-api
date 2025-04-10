@@ -1,7 +1,5 @@
-﻿
+﻿namespace PawHavenApp.DataAccess.Entities;
 
-namespace PawHavenApp.DataAccess.Entities;
-
-public class Chat : AbstractEntity
+public class Chat : AbstractEntity<int>
 {
 }

@@ -3,6 +3,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class UserFavourite : AbstractEntity
+public class UserFavourite : AbstractEntity<int>
 {
 }

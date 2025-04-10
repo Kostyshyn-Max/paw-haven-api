@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-public class PetStory : AbstractEntity
+public class PetStory : AbstractEntity<int>
 {
 
 }

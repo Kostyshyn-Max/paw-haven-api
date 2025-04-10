@@ -3,7 +3,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class PetType : AbstractEntity
+public class PetType : AbstractEntity<int>
 {
 }
-
