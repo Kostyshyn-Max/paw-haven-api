@@ -58,18 +58,18 @@ public class UserController : ControllerBase
     [HttpPost("register/organisation")]
     public async Task<ActionResult<UserTokenDataModel>> Register([FromBody] OrganisationCreateViewModel organisation)
     {
-        await this.userService.RegisterUserAsync(this.mapper.Map<UserCreateModel>(organisation.User));
+        Guid? userId = await this.userService.RegisterUserAsync(this.mapper.Map<UserCreateModel>(organisation.User));
         UserTokenDataModel? tokenModel = await this.userService.LoginAsync(new UserLoginModel
         {
             Email = organisation.User.Email,
             Password = organisation.User.Password,
         });
-        if (tokenModel is null)
+        if (tokenModel is null || userId is null)
         {
             return this.BadRequest("Registration Failed");
         }
 
-        int? organisationId = await this.organisationService.CreateAsync(this.mapper.Map<OrganisationCreateModel>(organisation));
+        int? organisationId = await this.organisationService.CreateAsync(this.mapper.Map<OrganisationCreateModel>(organisation), (Guid)userId);
 
         return tokenModel;
     }

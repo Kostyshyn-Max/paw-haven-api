@@ -4,5 +4,5 @@ using PawHavenApp.BusinessLogic.Models;
 
 public interface IOrganisationService
 {
-    Task<int?> CreateAsync(OrganisationCreateModel organisation);
+    Task<int?> CreateAsync(OrganisationCreateModel organisation, Guid userId);
 }
