@@ -68,6 +68,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
 
 builder.Services.AddCors(options =>
