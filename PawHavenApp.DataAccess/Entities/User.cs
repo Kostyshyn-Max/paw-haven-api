@@ -38,4 +38,6 @@ public class User : AbstractEntity<Guid>
     public DateTime RegistrationDate { get; set; }
 
     public UserRole UserRole { get; set; }
+
+    public Organisation? Organisation { get; set; }
 }

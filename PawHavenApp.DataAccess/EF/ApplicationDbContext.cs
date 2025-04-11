@@ -44,5 +44,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<HealthStatus>().HasData(DataSeed.GetHealthStatuses());
         modelBuilder.Entity<PetType>().HasData(DataSeed.GetPetTypes());
         modelBuilder.Entity<UserRole>().HasData(DataSeed.GetUserRoles());
+
+        modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
     }
 }

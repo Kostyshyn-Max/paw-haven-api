@@ -121,6 +121,12 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<UserModel?> GetUserProfile(Guid userId)
+    {
+        var userEntity = await this.userRepository.GetByIdAsync(userId);
+        return this.mapper.Map<UserModel>(userEntity);
+    }
+
     private async Task<string?> SetNewRefreshToken(Guid userId)
     {
         string refreshToken = this.jwtService.GenerateRefreshToken();

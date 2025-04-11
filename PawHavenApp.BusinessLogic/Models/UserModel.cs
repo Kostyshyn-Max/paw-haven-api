@@ -10,5 +10,9 @@ public class UserModel
 
     public string Email { get; set; } = string.Empty;
 
+    public bool IsOrganisationOwner { get; set; }
+
     public int RoleId { get; set; }
+
+    public OrganisationModel? Organisation { get; set; }
 }
