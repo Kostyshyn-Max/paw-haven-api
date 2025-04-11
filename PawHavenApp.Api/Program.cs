@@ -88,6 +88,8 @@ builder.Services.AddSingleton<IAmazonS3>(sp =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrganisationService, OrganisationService>();
 builder.Services.AddScoped<IS3StorageService, S3StorageService>();
+builder.Services.AddScoped<IPetCardService, PetCardService>();
+builder.Services.AddScoped<IPetPhotoService, PetPhotoService>();
 
 builder.Services.AddSingleton<IJwtService, JwtService>();
 
