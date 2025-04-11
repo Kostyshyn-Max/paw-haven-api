@@ -73,4 +73,16 @@ public class UserRepository : AbstractRepository, IUserRepository
             await this.context.SaveChangesAsync();
         }
     }
+
+    public async Task<string?> GetUserSalt(string email)
+    {
+        var user = await this.dbSet.FirstOrDefaultAsync(u => u.Email == email);
+        return user?.PasswordSalt ?? null;
+    }
+
+    public async Task<User?> LoginAsync(string email, string passwordHash)
+    {
+        var user = await this.dbSet.FirstOrDefaultAsync(u => u.Email == email && u.PasswordHash == passwordHash);
+        return user;
+    }
 }

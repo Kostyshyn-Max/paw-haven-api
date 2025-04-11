@@ -454,11 +454,10 @@ namespace PawHavenApp.DataAccess.Migrations
                         .HasColumnName("password_salt");
 
                     b.Property<string>("RefreshToken")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("refresh_token");
 
-                    b.Property<DateTime>("RefreshTokenExpireDate")
+                    b.Property<DateTime?>("RefreshTokenExpireDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("refresh_token_expire_date");
 

@@ -12,7 +12,7 @@ using PawHavenApp.DataAccess.EF;
 namespace PawHavenApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250410190341_Initial")]
+    [Migration("20250411120739_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -457,11 +457,10 @@ namespace PawHavenApp.DataAccess.Migrations
                         .HasColumnName("password_salt");
 
                     b.Property<string>("RefreshToken")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("refresh_token");
 
-                    b.Property<DateTime>("RefreshTokenExpireDate")
+                    b.Property<DateTime?>("RefreshTokenExpireDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("refresh_token_expire_date");
 

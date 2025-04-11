@@ -1,6 +1,7 @@
 namespace PawHavenApp.Api.Controllers;
 
 using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PawHavenApp.Api.ViewModels;
@@ -14,30 +15,48 @@ using PawHavenApp.DataAccess.Entities;
 public class UserController : ControllerBase
 {
     private readonly IJwtService jwtService;
+    private readonly IUserService userService;
+    private readonly IMapper mapper;
 
-    public UserController(IJwtService jwtService)
+    public UserController(IJwtService jwtService, IUserService userService, IMapper mapper)
     {
         this.jwtService = jwtService;
+        this.userService = userService;
+        this.mapper = mapper;
     }
 
     [HttpPost("login")]
-    public ActionResult<UserTokenDataModel> Login([FromBody] UserLoginViewModel user)
+    public async Task<ActionResult<UserTokenDataModel>> Login([FromBody] UserLoginViewModel user)
     {
-        var token = this.jwtService.GenerateAccessToken(new UserModel()
+        UserTokenDataModel? tokenModel = await this.userService.LoginAsync(this.mapper.Map<UserLoginModel>(user));
+        if (tokenModel is null)
         {
-            FirstName = "John", LastName = "Doe", Email = user.Email, Id = Guid.NewGuid(), RoleId = (int)UserRoles.User,
-        });
-        var refreshToken = this.jwtService.GenerateRefreshToken();
+            return this.Unauthorized("Invalid username or password.");
+        }
 
-        return this.Ok(new UserTokenDataModel
-        {
-            Token = token,
-            RefreshToken = refreshToken,
-        });
+        return this.Ok(tokenModel);
     }
 
-    [HttpPost("register")]
+    [HttpPost("register/user")]
     public async Task<ActionResult<UserTokenDataModel>> Register([FromBody] UserCreateViewModel user)
+    {
+        await this.userService.RegisterUserAsync(this.mapper.Map<UserCreateModel>(user));
+        UserTokenDataModel? tokenModel = await this.userService.LoginAsync(new UserLoginModel
+        {
+            Email = user.Email,
+            Password = user.Password,
+        });
+
+        if (tokenModel is null)
+        {
+            return this.BadRequest("Registration Failed");
+        }
+
+        return this.Ok(tokenModel);
+    }
+
+    [HttpPost("register/organisation")]
+    public async Task<ActionResult<UserTokenDataModel>> Register([FromBody] OrganisationCreateViewModel organisation)
     {
         return new UserTokenDataModel();
     }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PawHavenApp.Api.Profiles;
 using PawHavenApp.BusinessLogic.Interfaces;
 using PawHavenApp.BusinessLogic.Services;
 using PawHavenApp.DataAccess.EF;
@@ -60,12 +61,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-            ),
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
         };
     });
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policyBuilder => policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 
 var app = builder.Build();
 
