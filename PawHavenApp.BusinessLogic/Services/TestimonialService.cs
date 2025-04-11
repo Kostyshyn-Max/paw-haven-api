@@ -36,20 +36,12 @@ public class TestimonialService : ITestimonialService
         return await this.testimonialRepository.CreateAsync(testimonialEntity);
     }
 
-    public async Task<List<TestimonialGetModel>> GetAllTestimonialsByOrganisationIdAsync(int organisationId)
+    public async Task<List<TestimonialModel>> GetAllTestimonialsByOrganisationIdAsync(int organisationId)
     {
-        var testimonials = await this.dbSet
-        .Where(t => t.OrganisationId == organisationId)
-        .Select(t => new TestimonialGetModel
-        {
-            Id = t.Id,
-            AuthorName = t.User.FirstName,
-            AuthorLastName = t.User.LastName,
-            Message = t.Message,
-            Rate = t.Rate,
-        })
-        .ToListAsync();
+        var testimonials = await testimonialRepository.GetAllAsync(t => t.OrganisationId == organisationId);
 
-        return testimonials;
+        var result = mapper.Map<List<TestimonialModel>>(testimonials);
+
+        return result;
     }
 }

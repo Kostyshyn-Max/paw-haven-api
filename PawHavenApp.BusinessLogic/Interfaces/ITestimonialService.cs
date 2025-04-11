@@ -7,5 +7,5 @@ public interface ITestimonialService
 {
     Task<int?> CreateAsync(TestimonialModel testimonial, Guid userId);
 
-    Task<List<TestimonialGetModel>> GetAllTestimonialsByOrganisationIdAsync(int organizationId);
+    Task<List<TestimonialModel>> GetAllTestimonialsByOrganisationIdAsync(int organisationId);
 }

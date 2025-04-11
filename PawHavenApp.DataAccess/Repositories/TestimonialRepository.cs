@@ -38,7 +38,7 @@ public class TestimonialRepository : AbstractRepository, ITestimonialRepository
 
     public async Task<IEnumerable<Testimonial>> GetAllAsync(Expression<Func<Testimonial, bool>> predicate)
     {
-        var testimonials = await this.dbSet.Where(predicate).ToListAsync();
+        var testimonials = await this.dbSet.Where(predicate).Include(t => t.User).ToListAsync();
         return testimonials;
     }
 

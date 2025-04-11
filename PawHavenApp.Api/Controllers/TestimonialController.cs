@@ -36,7 +36,7 @@ public class TestimonialController : ControllerBase
     }
 
     [HttpGet("{organisationId:int}")]
-    public async Task<ActionResult<IEnumerable<TestimonialGetModel>>> GetOrganisationTestimonials([FromRoute] int organisationId)
+    public async Task<ActionResult<IEnumerable<TestimonialModel>>> GetOrganisationTestimonials([FromRoute] int organisationId)
     {
        return await testimonialService.GetAllTestimonialsByOrganisationIdAsync(organisationId);
     }

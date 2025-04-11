@@ -7,4 +7,6 @@ public class TestimonialModel
     public int Rate { get; set; }
 
     public int OrganisationId { get; set; }
+
+    public UserModel User { get; set; }
 }
