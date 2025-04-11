@@ -1,10 +1,10 @@
-using Microsoft.Extensions.Configuration;
-
 namespace PawHavenApp.BusinessLogic.Services;
 
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using PawHavenApp.BusinessLogic.Interfaces;
 using PawHavenApp.BusinessLogic.Models;
 using PawHavenApp.DataAccess.EF;
@@ -69,18 +69,64 @@ public class UserService : IUserService
         }
 
         string token = this.jwtService.GenerateAccessToken(this.mapper.Map<UserModel>(userEntity));
-        string refreshToken = this.jwtService.GenerateRefreshToken();
 
-        userEntity.RefreshToken = refreshToken;
-        userEntity.RefreshTokenExpireDate = DateTime.UtcNow.AddDays(int.Parse(this.configuration["JWT:RefreshTokenExpirationDays"] ?? "7"));
-
-        await this.userRepository.UpdateAsync(userEntity);
+        string? refreshToken = await this.SetNewRefreshToken(userEntity.Id);
+        if (refreshToken is null)
+        {
+            return null;
+        }
 
         return new UserTokenDataModel()
         {
             Token = token,
             RefreshToken = refreshToken,
         };
+    }
+
+    public async Task<UserTokenDataModel?> RefreshToken(UserTokenDataModel tokenModel)
+    {
+        ClaimsPrincipal? principals = this.jwtService.GetPrincipalFromExpiredToken(tokenModel.Token);
+        if (principals is null)
+        {
+            return null;
+        }
+
+        var id = principals.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (id is null)
+        {
+            return null;
+        }
+
+        Guid userId = Guid.Parse(id);
+        string? oldRefreshToken = await this.userRepository.GetRefreshToken(userId);
+        if (oldRefreshToken is null || !oldRefreshToken.Equals(tokenModel.RefreshToken))
+        {
+            return null;
+        }
+
+        string? newRefreshToken = await this.SetNewRefreshToken(userId);
+        if (newRefreshToken is null)
+        {
+            return null;
+        }
+
+        string? newToken = this.jwtService.GenerateAccessToken(
+            this.mapper.Map<UserModel>(await this.userRepository.GetByIdAsync(userId)
+        ));
+
+        return new UserTokenDataModel()
+        {
+            Token = newToken,
+            RefreshToken = newRefreshToken,
+        };
+    }
+
+    private async Task<string?> SetNewRefreshToken(Guid userId)
+    {
+        string refreshToken = this.jwtService.GenerateRefreshToken();
+        DateTime expireDate = DateTime.UtcNow.AddDays(int.Parse(this.configuration["JWT:RefreshTokenExpirationDays"] ?? "7"));
+
+        return (await this.userRepository.SetRefreshToken(userId, refreshToken, expireDate) is not null) ? refreshToken : null;
     }
 
     private string GenerateHash(byte[] password, byte[] salt)

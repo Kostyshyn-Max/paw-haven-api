@@ -14,13 +14,11 @@ using PawHavenApp.DataAccess.Entities;
 [Route("api/[controller]/")]
 public class UserController : ControllerBase
 {
-    private readonly IJwtService jwtService;
     private readonly IUserService userService;
     private readonly IMapper mapper;
 
-    public UserController(IJwtService jwtService, IUserService userService, IMapper mapper)
+    public UserController(IUserService userService, IMapper mapper)
     {
-        this.jwtService = jwtService;
         this.userService = userService;
         this.mapper = mapper;
     }
@@ -62,31 +60,18 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("refresh")]
-    public ActionResult<UserTokenDataModel> Refresh([FromBody] UserRefreshTokenViewModel tokenModel)
+    public async Task<ActionResult<UserTokenDataModel>> Refresh([FromBody] UserRefreshTokenViewModel oldTokenModel)
     {
-        var principals = this.jwtService.GetPrincipalFromExpiredToken(tokenModel.OldToken);
-        if (principals is null)
+        var tokenModel = await this.userService.RefreshToken(new UserTokenDataModel
         {
-            return this.BadRequest();
+            Token = oldTokenModel.OldToken,
+            RefreshToken = oldTokenModel.RefreshToken,
+        });
+        if (tokenModel is null)
+        {
+            return this.BadRequest("Refresh Failed");
         }
 
-        var user = new UserModel()
-        {
-            Id = Guid.Parse(principals.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ??
-                            string.Empty),
-            FirstName = principals.Claims?.FirstOrDefault(c => c.Type == "firstName")?.Value ?? string.Empty,
-            LastName = principals.Claims?.FirstOrDefault(c => c.Type == "lastName")?.Value ?? string.Empty,
-            Email = principals.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value ?? string.Empty,
-            RoleId = (int)UserRoles.User,
-        };
-
-        var token = this.jwtService.GenerateAccessToken(user);
-        var refreshToken = this.jwtService.GenerateRefreshToken();
-
-        return new UserTokenDataModel
-        {
-            Token = token,
-            RefreshToken = refreshToken,
-        };
+        return this.Ok(tokenModel);
     }
 }
