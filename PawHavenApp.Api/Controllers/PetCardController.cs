@@ -1,13 +1,12 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using PawHavenApp.BusinessLogic.Models;
-
 namespace PawHavenApp.Api.Controllers;
 
+using System.Security.Claims;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PawHavenApp.Api.ViewModels;
 using PawHavenApp.BusinessLogic.Interfaces;
+using PawHavenApp.BusinessLogic.Models;
 using PawHavenApp.DataAccess.Entities;
 
 [ApiController]

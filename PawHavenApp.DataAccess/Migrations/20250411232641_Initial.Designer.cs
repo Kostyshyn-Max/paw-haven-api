@@ -12,7 +12,7 @@ using PawHavenApp.DataAccess.EF;
 namespace PawHavenApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250411120739_Initial")]
+    [Migration("20250411232641_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -176,7 +176,8 @@ namespace PawHavenApp.DataAccess.Migrations
 
                     b.HasIndex("OrganisationCategoryId");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("OwnerId")
+                        .IsUnique();
 
                     b.ToTable("organisations");
                 });
@@ -203,17 +204,27 @@ namespace PawHavenApp.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Title = "Ветеринарна клініка"
+                            Title = "Притулок для тварин"
                         },
                         new
                         {
                             Id = 2,
-                            Title = "Притулок"
+                            Title = "Ветеринарна клініка"
                         },
                         new
                         {
                             Id = 3,
-                            Title = "Розплідник"
+                            Title = "Зоозахисна організація"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Title = "Благодійний фонд"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Title = "Волонтерська група"
                         });
                 });
 
@@ -474,6 +485,9 @@ namespace PawHavenApp.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("RoleId");
 
                     b.ToTable("users");
@@ -588,8 +602,8 @@ namespace PawHavenApp.DataAccess.Migrations
                         .IsRequired();
 
                     b.HasOne("PawHavenApp.DataAccess.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
+                        .WithOne("Organisation")
+                        .HasForeignKey("PawHavenApp.DataAccess.Entities.Organisation", "OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -628,7 +642,7 @@ namespace PawHavenApp.DataAccess.Migrations
             modelBuilder.Entity("PawHavenApp.DataAccess.Entities.PetPhoto", b =>
                 {
                     b.HasOne("PawHavenApp.DataAccess.Entities.PetCard", "PetCard")
-                        .WithMany()
+                        .WithMany("Photos")
                         .HasForeignKey("PetCardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -694,6 +708,16 @@ namespace PawHavenApp.DataAccess.Migrations
                     b.Navigation("PetCard");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PawHavenApp.DataAccess.Entities.PetCard", b =>
+                {
+                    b.Navigation("Photos");
+                });
+
+            modelBuilder.Entity("PawHavenApp.DataAccess.Entities.User", b =>
+                {
+                    b.Navigation("Organisation");
                 });
 #pragma warning restore 612, 618
         }
