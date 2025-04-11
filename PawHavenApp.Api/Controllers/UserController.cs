@@ -69,7 +69,7 @@ public class UserController : ControllerBase
             return this.BadRequest("Registration Failed");
         }
 
-        int? organisationId = await this.organisationService.CreateAsync(this.mapper.Map<OrganisationCreateModel>(organisation), (Guid)userId);
+        await this.organisationService.CreateAsync(this.mapper.Map<OrganisationCreateModel>(organisation), (Guid)userId);
 
         return tokenModel;
     }
@@ -88,5 +88,17 @@ public class UserController : ControllerBase
         }
 
         return this.Ok(tokenModel);
+    }
+
+    [HttpGet("profile/{userId:guid}")]
+    public async Task<ActionResult<UserProfileViewModel>> Get(Guid userId)
+    {
+        var userModel = await this.userService.GetUserProfile(userId);
+        if (userModel is null)
+        {
+            return this.NotFound("User profile is not found");
+        }
+
+        return this.Ok(this.mapper.Map<UserProfileViewModel>(userModel));
     }
 }
