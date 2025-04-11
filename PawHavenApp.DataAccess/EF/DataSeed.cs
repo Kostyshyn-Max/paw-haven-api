@@ -6,12 +6,16 @@ public static class DataSeed
 {
     public static IEnumerable<OrganisationCategory> GetOrganisationCategories()
     {
-        return new List<OrganisationCategory>
+        List<OrganisationCategory> organisationCategories = new List<OrganisationCategory>();
+
+        string[] titles = new[] { "Притулок для тварин", "Ветеринарна клініка", "Зоозахисна організація", "Благодійний фонд", "Волонтерська група" };
+
+        for (int i = 0; i < titles.Length; i++)
         {
-            new OrganisationCategory { Id = (int)OrganisationCategories.VetClinic, Title = "Ветеринарна клініка" },
-            new OrganisationCategory { Id = (int)OrganisationCategories.Shelter, Title = "Притулок" },
-            new OrganisationCategory { Id = (int)OrganisationCategories.Nursery, Title = "Розплідник" },
-        };
+            organisationCategories.Add(new OrganisationCategory { Id = i + 1, Title = titles[i] });
+        }
+
+        return organisationCategories;
     }
 
     public static IEnumerable<HealthStatus> GetHealthStatuses()
