@@ -73,4 +73,37 @@ public class UserRepository : AbstractRepository, IUserRepository
             await this.context.SaveChangesAsync();
         }
     }
+
+    public async Task<string?> GetUserSalt(string email)
+    {
+        var user = await this.dbSet.FirstOrDefaultAsync(u => u.Email == email);
+        return user?.PasswordSalt ?? null;
+    }
+
+    public async Task<User?> LoginAsync(string email, string passwordHash)
+    {
+        var user = await this.dbSet.FirstOrDefaultAsync(u => u.Email == email && u.PasswordHash == passwordHash);
+        return user;
+    }
+
+    public async Task<string?> GetRefreshToken(Guid userId)
+    {
+        var user = await this.dbSet.FindAsync(userId);
+        return user?.RefreshToken ?? null;
+    }
+
+    public async Task<string?> SetRefreshToken(Guid userId, string refreshToken, DateTime expireDate)
+    {
+        var user = await this.dbSet.FindAsync(userId);
+        if (user is null)
+        {
+            return null;
+        }
+
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpireDate = expireDate;
+        await this.UpdateAsync(user);
+
+        return refreshToken;
+    }
 }

@@ -40,7 +40,7 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<OrganisationCategory>().HasData(DataSeed.GetOgranisationCategories());
+        modelBuilder.Entity<OrganisationCategory>().HasData(DataSeed.GetOrganisationCategories());
         modelBuilder.Entity<HealthStatus>().HasData(DataSeed.GetHealthStatuses());
         modelBuilder.Entity<PetType>().HasData(DataSeed.GetPetTypes());
         modelBuilder.Entity<UserRole>().HasData(DataSeed.GetUserRoles());

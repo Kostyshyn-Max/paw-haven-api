@@ -4,7 +4,7 @@ using PawHavenApp.DataAccess.Entities;
 
 public static class DataSeed
 {
-    public static IEnumerable<OrganisationCategory> GetOgranisationCategories()
+    public static IEnumerable<OrganisationCategory> GetOrganisationCategories()
     {
         return new List<OrganisationCategory>
         {

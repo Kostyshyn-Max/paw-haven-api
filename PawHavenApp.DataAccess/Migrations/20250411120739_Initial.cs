@@ -1,13 +1,13 @@
-﻿#nullable disable
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace PawHavenApp.DataAccess.Migrations
 {
-    using System;
-    using Microsoft.EntityFrameworkCore.Migrations;
-    using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-
     /// <inheritdoc />
     public partial class Initial : Migration
     {
@@ -78,8 +78,8 @@ namespace PawHavenApp.DataAccess.Migrations
                     password_hash = table.Column<string>(type: "text", nullable: false),
                     password_salt = table.Column<string>(type: "text", nullable: false),
                     is_organisation_owner = table.Column<bool>(type: "boolean", nullable: false),
-                    refresh_token = table.Column<string>(type: "text", nullable: false),
-                    refresh_token_expire_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    refresh_token = table.Column<string>(type: "text", nullable: true),
+                    refresh_token_expire_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     registration_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
