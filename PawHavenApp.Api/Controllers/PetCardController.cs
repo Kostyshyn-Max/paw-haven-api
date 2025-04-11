@@ -28,7 +28,7 @@ public class PetCardController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("/add")]
+    [HttpPost("add")]
     public async Task<ActionResult> AddPetCard([FromForm] PetCardCreateViewModel petCard)
     {
         var petCardModel = this.mapper.Map<PetCardModel>(petCard);
@@ -44,20 +44,36 @@ public class PetCardController : ControllerBase
         return this.Ok();
     }
 
-    [HttpGet("/{page:int?}/{pageSize:int?}")]
-    public async Task<IEnumerable<PetCardModel>> GetPetCards(int? page, int? pageSize)
+    [HttpGet("")]
+    [HttpGet("{page:int?}/{pageSize:int?}")]
+    public async Task<IEnumerable<PetCardViewModel>> GetPetCards(int? page, int? pageSize)
     {
-        List<PetCardModel> petCards;
+        List<PetCardViewModel> result;
 
         if (page is null && pageSize is null)
         {
-            petCards = await this.petCardService.GetAllPetCardsAsync();
+            var petCards = await this.petCardService.GetAllPetCardsAsync();
+            result = this.CollectPetCards(petCards);
         }
         else
         {
-            petCards = await this.petCardService.GetAllPetCardsAsync((int)page!, (int)pageSize!);
+            var petCards = await this.petCardService.GetAllPetCardsAsync((int)page!, (int)pageSize!);
+            result = this.CollectPetCards(petCards);
         }
 
-        return petCards;
+        return result;
+    }
+
+    private List<PetCardViewModel> CollectPetCards(List<PetCardModel> petCards)
+    {
+        List<PetCardViewModel> result = new List<PetCardViewModel>();
+        foreach (var petCard in petCards)
+        {
+            var petCardViewModel = this.mapper.Map<PetCardViewModel>(petCard);
+            petCardViewModel.PetPhoto = this.mapper.Map<PetPhotoViewModel>(petCard.Photos.FirstOrDefault());
+            result.Add(petCardViewModel);
+        }
+
+        return result;
     }
 }

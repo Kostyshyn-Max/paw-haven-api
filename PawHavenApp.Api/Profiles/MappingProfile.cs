@@ -24,5 +24,8 @@ public class MappingProfile : Profile
         this.CreateMap<PetType, PetTypeModel>();
         this.CreateMap<HealthStatus, HealthStatusModel>();
         this.CreateMap<PetCard, PetCardModel>();
+        this.CreateMap<PetTypeModel, PetTypeViewModel>();
+        this.CreateMap<PetCardModel, PetCardViewModel>().ForMember(o => o.PetPhoto, options => options.Ignore());
+        this.CreateMap<PetPhotoModel, PetPhotoViewModel>();
     }
 }
