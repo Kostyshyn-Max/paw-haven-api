@@ -1,6 +1,7 @@
 namespace PawHavenApp.BusinessLogic.Services;
 
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PawHavenApp.BusinessLogic.Interfaces;
 using PawHavenApp.BusinessLogic.Models;
 using PawHavenApp.DataAccess.EF;
