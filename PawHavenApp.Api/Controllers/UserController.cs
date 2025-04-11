@@ -15,12 +15,14 @@ using PawHavenApp.DataAccess.Entities;
 public class UserController : ControllerBase
 {
     private readonly IUserService userService;
+    private readonly IOrganisationService organisationService;
     private readonly IMapper mapper;
 
-    public UserController(IUserService userService, IMapper mapper)
+    public UserController(IUserService userService, IMapper mapper, IOrganisationService organisationService)
     {
         this.userService = userService;
         this.mapper = mapper;
+        this.organisationService = organisationService;
     }
 
     [HttpPost("login")]
@@ -56,7 +58,20 @@ public class UserController : ControllerBase
     [HttpPost("register/organisation")]
     public async Task<ActionResult<UserTokenDataModel>> Register([FromBody] OrganisationCreateViewModel organisation)
     {
-        return new UserTokenDataModel();
+        await this.userService.RegisterUserAsync(this.mapper.Map<UserCreateModel>(organisation.User));
+        UserTokenDataModel? tokenModel = await this.userService.LoginAsync(new UserLoginModel
+        {
+            Email = organisation.User.Email,
+            Password = organisation.User.Password,
+        });
+        if (tokenModel is null)
+        {
+            return this.BadRequest("Registration Failed");
+        }
+
+        int? organisationId = await this.organisationService.CreateAsync(this.mapper.Map<OrganisationCreateModel>(organisation));
+
+        return tokenModel;
     }
 
     [HttpPost("refresh")]
