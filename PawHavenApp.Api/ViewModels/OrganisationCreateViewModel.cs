@@ -1,5 +1,6 @@
 namespace PawHavenApp.Api.ViewModels;
 
+using PawHavenApp.DataAccess.Entities;
 using System.ComponentModel.DataAnnotations;
 
 public class OrganisationCreateViewModel
@@ -13,5 +14,9 @@ public class OrganisationCreateViewModel
     [Phone]
     public string PhoneNumber { get; set; }
 
-    public string DonationCredentials { get; set; }
+    public string? DonationCredentials { get; set; }
+
+    public string? Location { get; set; }
+
+    public int OrganisationCategoryId { get; set; } = (int)OrganisationCategories.Shelter;
 }

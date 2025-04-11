@@ -35,7 +35,7 @@ public class UserService : IUserService
         string hashPassword = this.GenerateHash(password, salt);
         string saltString = Convert.ToBase64String(salt);
 
-        User? userEntity = this.mapper.Map<UserCreateModel, User>(user);
+        User? userEntity = this.mapper.Map<User>(user);
 
         if (userEntity is null)
         {
