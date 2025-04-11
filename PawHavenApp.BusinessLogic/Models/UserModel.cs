@@ -1,6 +1,6 @@
 namespace PawHavenApp.BusinessLogic.Models;
 
-public class User
+public class UserModel
 {
     public Guid Id { get; set; }
 

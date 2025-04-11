@@ -1,6 +1,6 @@
 namespace PawHavenApp.BusinessLogic.Models;
 
-public class UserTokenData
+public class UserTokenDataModel
 {
     public string Token { get; set; }
 
