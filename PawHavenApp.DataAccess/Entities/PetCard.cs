@@ -47,4 +47,6 @@ public class PetCard : AbstractEntity<int>
     [Required]
     [Column("views")]
     public int Views { get; set; }
+
+    public ICollection<PetPhoto> Photos { get; set; }
 }
