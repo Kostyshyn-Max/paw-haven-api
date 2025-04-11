@@ -1,9 +1,12 @@
 ﻿using System.Text;
+using Amazon;
+using Amazon.S3;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PawHavenApp.Api.Profiles;
+using PawHavenApp.BusinessLogic.Configurations;
 using PawHavenApp.BusinessLogic.Interfaces;
 using PawHavenApp.BusinessLogic.Services;
 using PawHavenApp.DataAccess.EF;
@@ -67,8 +70,25 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+builder.Services.Configure<AwsS3Settings>(builder.Configuration.GetSection("AWS"));
+
+builder.Services.AddSingleton<IAmazonS3>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var settings = config.GetSection("AWS").Get<AwsS3Settings>();
+
+    var awsConfig = new AmazonS3Config()
+    {
+        RegionEndpoint = RegionEndpoint.GetBySystemName(settings!.Region),
+    };
+
+    return new AmazonS3Client(settings.AccessKey, settings.SecretKey, awsConfig);
+});
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOrganisationService, OrganisationService>();
+builder.Services.AddScoped<IS3StorageService, S3StorageService>();
+
 builder.Services.AddSingleton<IJwtService, JwtService>();
 
 builder.Services.AddCors(options =>
