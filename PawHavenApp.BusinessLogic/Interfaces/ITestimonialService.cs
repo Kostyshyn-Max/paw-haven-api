@@ -1,7 +1,7 @@
-﻿using PawHavenApp.BusinessLogic.Models;
-using PawHavenApp.DataAccess.Entities;
+﻿namespace PawHavenApp.BusinessLogic.Interfaces;
 
-namespace PawHavenApp.BusinessLogic.Interfaces;
+using PawHavenApp.BusinessLogic.Models;
+using PawHavenApp.DataAccess.Entities;
 
 public interface ITestimonialService
 {

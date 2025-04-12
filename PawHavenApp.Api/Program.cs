@@ -91,6 +91,7 @@ builder.Services.AddScoped<ITestimonialService, TestimonialService>();
 builder.Services.AddScoped<IS3StorageService, S3StorageService>();
 builder.Services.AddScoped<IPetCardService, PetCardService>();
 builder.Services.AddScoped<IPetPhotoService, PetPhotoService>();
+builder.Services.AddScoped<IUserFavouritesService, UserFavouriteService>();
 builder.Services.AddScoped<IOrganisationCategoryService, OrganisationCategoryService>();
 builder.Services.AddScoped<IPetTypeService, PetTypeService>();
 

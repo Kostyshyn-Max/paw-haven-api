@@ -2,15 +2,9 @@
 
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PawHavenApp.BusinessLogic.Interfaces;
 using PawHavenApp.BusinessLogic.Models;
-using PawHavenApp.BusinessLogic.Services;
-using PawHavenApp.DataAccess.Entities;
-using PawHavenApp.DataAccess.Repositories;
-using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
 [Route("api/[controller]")]

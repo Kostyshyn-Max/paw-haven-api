@@ -14,13 +14,11 @@ public class TestimonialService : ITestimonialService
 {
     private readonly ITestimonialRepository testimonialRepository;
     private readonly IMapper mapper;
-    private readonly DbSet<Testimonial> dbSet;
 
     public TestimonialService(ApplicationDbContext context, IMapper mapper)
     {
         this.testimonialRepository = new TestimonialRepository(context);
         this.mapper = mapper;
-        this.dbSet = context.Set<Testimonial>();
     }
 
     public async Task<int?> CreateAsync(TestimonialModel testimonial, Guid userId)

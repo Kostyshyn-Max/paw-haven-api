@@ -38,13 +38,21 @@ public class UserFavouriteRepository : AbstractRepository, IUserFavouriteReposit
 
     public async Task<IEnumerable<UserFavourite>> GetAllAsync(Expression<Func<UserFavourite, bool>> predicate)
     {
-        var userFavourites = await this.dbSet.Where(predicate).ToListAsync();
+        var userFavourites = await this.dbSet.Where(predicate)
+            .Include(u => u.PetCard)
+            .ToListAsync();
         return userFavourites;
     }
 
     public async Task<UserFavourite?> GetByIdAsync(int id)
     {
         var userFavourite = await this.dbSet.FindAsync(id);
+        return userFavourite;
+    }
+
+    public async Task<UserFavourite?> GetByIdAsync(int petCardId, Guid userId)
+    {
+        var userFavourite = await this.dbSet.FirstOrDefaultAsync(l => l.PetCardId == petCardId && l.UserId == userId);
         return userFavourite;
     }
 
@@ -67,6 +75,16 @@ public class UserFavouriteRepository : AbstractRepository, IUserFavouriteReposit
     public async Task DeleteAsync(int id)
     {
         var userFavourite = await this.dbSet.FindAsync(id);
+        if (userFavourite is not null)
+        {
+            this.dbSet.Remove(userFavourite);
+            await this.context.SaveChangesAsync();
+        }
+    }
+
+    public async Task DeleteAsync(int petCardId, Guid userId)
+    {
+        var userFavourite = await this.dbSet.FirstOrDefaultAsync(l => l.PetCardId == petCardId && l.UserId == userId);
         if (userFavourite is not null)
         {
             this.dbSet.Remove(userFavourite);
