@@ -14,6 +14,8 @@ public class PetCardDetailsViewModel
 
     public string Description { get; set; }
 
+    public string Gender { get; set; }
+
     public string Health { get; set; }
 
     public int Views { get; set; }
