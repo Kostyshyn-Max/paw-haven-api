@@ -21,15 +21,17 @@ public class MappingProfile : Profile
         this.CreateMap<Testimonial, TestimonialModel>();
         this.CreateMap<UserModel, UserProfileViewModel>();
         this.CreateMap<Organisation, OrganisationModel>();
-        this.CreateMap<PetCardCreateViewModel, PetCardModel>();
         this.CreateMap<PetCardModel, PetCard>();
         this.CreateMap<PetPhoto, PetPhotoModel>();
         this.CreateMap<PetType, PetTypeModel>();
         this.CreateMap<HealthStatus, HealthStatusModel>();
         this.CreateMap<PetCard, PetCardModel>();
-        this.CreateMap<PetTypeModel, PetTypeViewModel>();
-        this.CreateMap<PetCardModel, PetCardViewModel>().ForMember(o => o.PetPhoto, options => options.Ignore());
+        this.CreateMap<PetCardModel, PetCardViewModel>()
+            .ForMember(o => o.PetPhoto, options => options.Ignore());
         this.CreateMap<PetPhotoModel, PetPhotoViewModel>();
         this.CreateMap<OrganisationCategory, OrganisationCategoryModel>();
+        this.CreateMap<PetCardCreateModel, PetCardModel>()
+            .ForMember(p => p.Photos, options => options.Ignore());
+        this.CreateMap<PetCardModel, PetCardDetailsViewModel>();
     }
 }

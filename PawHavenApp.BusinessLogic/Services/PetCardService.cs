@@ -37,4 +37,18 @@ public class PetCardService : IPetCardService
         var petCardEntities = await this.petCardRepository.GetAllAsync(page, pageSize);
         return petCardEntities.Select(e => this.mapper.Map<PetCardModel>(e)).ToList();
     }
+
+    public async Task<PetCardModel?> GetPetCardDetailsByIdAsync(int petCardId)
+    {
+        var petCard = await this.petCardRepository.GetByIdAsync(petCardId);
+        if (petCard is null)
+        {
+            return null;
+        }
+
+        petCard.Views += 1;
+        await this.petCardRepository.UpdateAsync(petCard);
+
+        return this.mapper.Map<PetCardModel>(petCard);
+    }
 }

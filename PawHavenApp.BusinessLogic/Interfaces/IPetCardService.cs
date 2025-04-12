@@ -10,4 +10,6 @@ public interface IPetCardService
     Task<List<PetCardModel>> GetAllPetCardsAsync();
 
     Task<List<PetCardModel>> GetAllPetCardsAsync(int page, int pageSize);
+
+    Task<PetCardModel?> GetPetCardDetailsByIdAsync(int petCardId);
 }

@@ -4,6 +4,8 @@ using PawHavenApp.DataAccess.Entities;
 
 public class PetCardModel
 {
+    public int Id { get; set; }
+
     public Guid OwnerId { get; set; }
 
     public string Name { get; set; }
