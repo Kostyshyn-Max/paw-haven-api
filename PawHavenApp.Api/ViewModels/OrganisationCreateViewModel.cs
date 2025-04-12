@@ -12,7 +12,7 @@ public class OrganisationCreateViewModel
     public string Description { get; set; }
 
     [Phone]
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
     public string? DonationCredentials { get; set; }
 
