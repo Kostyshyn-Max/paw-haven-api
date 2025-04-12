@@ -28,7 +28,7 @@ public class PetCardController : ControllerBase
 
     [Authorize]
     [HttpPost("add")]
-    public async Task<ActionResult> AddPetCard([FromForm] PetCardCreateViewModel petCard)
+    public async Task<ActionResult> AddPetCard([FromForm] PetCardCreateModel petCard)
     {
         var petCardModel = this.mapper.Map<PetCardModel>(petCard);
         petCardModel.OwnerId = Guid.Parse(this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
@@ -61,6 +61,18 @@ public class PetCardController : ControllerBase
         }
 
         return result;
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<PetCardDetailsViewModel>> GetPetCardById(int id)
+    {
+        var petCard = await this.petCardService.GetPetCardDetailsByIdAsync(id);
+        if (petCard is null)
+        {
+            return this.NotFound($"Pet card with such id: {id} doesn't exist");
+        }
+
+        return this.mapper.Map<PetCardDetailsViewModel>(petCard);
     }
 
     private List<PetCardViewModel> CollectPetCards(List<PetCardModel> petCards)

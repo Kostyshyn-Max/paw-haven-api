@@ -53,7 +53,13 @@ public class PetCardRepository : AbstractRepository, IPetCardRepository
 
     public async Task<PetCard?> GetByIdAsync(int id)
     {
-        var petCard = await this.dbSet.FindAsync(id);
+        var petCard = await this.dbSet
+                            .Include(p => p.User)
+                                .ThenInclude(u => u.Organisation)
+                            .Include(p => p.Photos)
+                            .Include(p => p.HealthStatus)
+                            .Include(p => p.PetType)
+                            .FirstOrDefaultAsync(p => p.Id == id);
         return petCard;
     }
 

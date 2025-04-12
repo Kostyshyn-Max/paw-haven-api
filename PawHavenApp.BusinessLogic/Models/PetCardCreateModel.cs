@@ -1,6 +1,8 @@
-namespace PawHavenApp.Api.ViewModels;
+namespace PawHavenApp.BusinessLogic.Models;
 
-public class PetCardCreateViewModel
+using Microsoft.AspNetCore.Http;
+
+public class PetCardCreateModel
 {
     public string Name { get; set; }
 
