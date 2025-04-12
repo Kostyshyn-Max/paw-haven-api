@@ -1,4 +1,7 @@
-﻿namespace PawHavenApp.BusinessLogic.Services;
+﻿using PawHavenApp.DataAccess.Interfaces;
+using PawHavenApp.DataAccess.Repositories;
+
+namespace PawHavenApp.BusinessLogic.Services;
 
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -6,8 +9,6 @@ using PawHavenApp.BusinessLogic.Interfaces;
 using PawHavenApp.BusinessLogic.Models;
 using PawHavenApp.DataAccess.EF;
 using PawHavenApp.DataAccess.Entities;
-using PawHavenApp.DataAccess.Interfaces;
-using PawHavenApp.DataAccess.Repositories;
 
 public class TestimonialService : ITestimonialService
 {
