@@ -19,6 +19,7 @@ public class MappingProfile : Profile
         this.CreateMap<Organisation, OrganisationCreateModel>();
         this.CreateMap<TestimonialModel, Testimonial>();
         this.CreateMap<Testimonial, TestimonialModel>();
+        this.CreateMap<TestimonialCreateViewModel, TestimonialModel>();
         this.CreateMap<UserModel, UserProfileViewModel>();
         this.CreateMap<Organisation, OrganisationModel>();
         this.CreateMap<PetCardModel, PetCard>();
