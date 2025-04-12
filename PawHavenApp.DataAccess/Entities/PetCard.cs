@@ -28,6 +28,9 @@ public class PetCard : AbstractEntity<int>
     [Column("location")]
     public string Location { get; set; } = string.Empty;
 
+    [Column("gender")]
+    public string Gender { get; set; }
+
     [Required]
     [Column("health")]
     public string Health { get; set; } = string.Empty;

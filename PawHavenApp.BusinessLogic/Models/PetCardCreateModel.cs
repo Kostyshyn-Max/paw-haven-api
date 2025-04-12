@@ -14,6 +14,8 @@ public class PetCardCreateModel
 
     public string Health { get; set; }
 
+    public string Gender { get; set; }
+
     public int HealthStatusId { get; set; }
 
     public int PetTypeId { get; set; }
