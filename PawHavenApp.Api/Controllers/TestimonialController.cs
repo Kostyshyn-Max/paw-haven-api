@@ -3,6 +3,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PawHavenApp.Api.ViewModels;
 using PawHavenApp.BusinessLogic.Interfaces;
 using PawHavenApp.BusinessLogic.Models;
 using System.Security.Claims;
@@ -22,11 +23,11 @@ public class TestimonialController : ControllerBase
 
     [Authorize]
     [HttpPost]
-    public async Task AddTestimonial([FromBody] TestimonialModel testimonial)
+    public async Task AddTestimonial([FromBody] TestimonialCreateViewModel testimonial)
     {
         Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
 
-        await this.testimonialService.CreateAsync(testimonial, userId);
+        await this.testimonialService.CreateAsync(mapper.Map<TestimonialModel>(testimonial), userId);
     }
 
     [HttpGet("{organisationId:int}")]
