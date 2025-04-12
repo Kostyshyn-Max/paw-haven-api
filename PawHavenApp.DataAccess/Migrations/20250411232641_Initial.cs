@@ -1,13 +1,13 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-
-#nullable disable
+﻿#nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace PawHavenApp.DataAccess.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+    using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
     /// <inheritdoc />
     public partial class Initial : Migration
     {
@@ -332,9 +332,11 @@ namespace PawHavenApp.DataAccess.Migrations
                 columns: new[] { "id", "title" },
                 values: new object[,]
                 {
-                    { 1, "Ветеринарна клініка" },
-                    { 2, "Притулок" },
-                    { 3, "Розплідник" }
+                    { 1, "Притулок для тварин" },
+                    { 2, "Ветеринарна клініка" },
+                    { 3, "Зоозахисна організація" },
+                    { 4, "Благодійний фонд" },
+                    { 5, "Волонтерська група" }
                 });
 
             migrationBuilder.InsertData(
@@ -386,7 +388,8 @@ namespace PawHavenApp.DataAccess.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_organisations_owner_id",
                 table: "organisations",
-                column: "owner_id");
+                column: "owner_id",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_pet_cards_health_status_id",
@@ -432,6 +435,12 @@ namespace PawHavenApp.DataAccess.Migrations
                 name: "IX_user_favourites_user_id",
                 table: "user_favourites",
                 column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_email",
+                table: "users",
+                column: "email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_users_role_id",

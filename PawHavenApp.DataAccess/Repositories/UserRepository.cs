@@ -44,7 +44,7 @@ public class UserRepository : AbstractRepository, IUserRepository
 
     public async Task<User?> GetByIdAsync(Guid id)
     {
-        var user = await this.dbSet.FindAsync(id);
+        var user = await this.dbSet.Include(u => u.Organisation).FirstOrDefaultAsync(u => u.Id.Equals(id));
         return user;
     }
 

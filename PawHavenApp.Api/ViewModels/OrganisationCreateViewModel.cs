@@ -18,5 +18,5 @@ public class OrganisationCreateViewModel
 
     public string? Location { get; set; }
 
-    public int OrganisationCategoryId { get; set; } = (int)OrganisationCategories.Shelter;
+    public int OrganisationCategoryId { get; set; }
 }
