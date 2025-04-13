@@ -44,7 +44,8 @@ public class OrganisationRepository : AbstractRepository, IOrganisationRepositor
 
     public async Task<Organisation?> GetByIdAsync(int id)
     {
-        var organisation = await this.dbSet.FindAsync(id);
+        var organisation = await this.dbSet.Include(o => o.User).ThenInclude(u=>u.PetCards).FirstOrDefaultAsync(
+            o => o.Id == id);
         return organisation;
     }
 

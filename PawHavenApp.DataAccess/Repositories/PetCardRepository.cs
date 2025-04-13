@@ -47,7 +47,12 @@ public class PetCardRepository : AbstractRepository, IPetCardRepository
 
     public async Task<IEnumerable<PetCard>> GetAllAsync(Expression<Func<PetCard, bool>> predicate)
     {
-        var petCards = await this.dbSet.Where(predicate).ToListAsync();
+        var petCards = await this.dbSet
+            .Where(predicate)
+            .Include(p => p.Photos)
+            .Include(p => p.HealthStatus)
+            .Include(p => p.PetType)
+            .ToListAsync();
         return petCards;
     }
 

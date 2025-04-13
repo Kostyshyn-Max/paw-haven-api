@@ -35,6 +35,7 @@ public class MappingProfile : Profile
             .ForMember(p => p.Photos, options => options.Ignore());
         this.CreateMap<PetCardModel, PetCardDetailsViewModel>();
         this.CreateMap<UserUpdateViewModel, UserUpdateModel>();
+        this.CreateMap<User, OrganisationUserModel>();
         this.CreateMap<PetStoryCreateModel, PetStoryModel>();
         this.CreateMap<PetStoryModel, PetStory>();
         this.CreateMap<PetStory, PetStoryModel>();
