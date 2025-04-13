@@ -40,6 +40,13 @@ public class UserFavouriteRepository : AbstractRepository, IUserFavouriteReposit
     {
         var userFavourites = await this.dbSet.Where(predicate)
             .Include(u => u.PetCard)
+                .ThenInclude(pc => pc.Photos)
+            .Include(u => u.PetCard)
+                .ThenInclude(pc => pc.HealthStatus)
+            .Include(u => u.PetCard)
+                .ThenInclude(pc => pc.PetType)
+            .Include(p => p.User)
+                .ThenInclude(u => u.Organisation)
             .ToListAsync();
         return userFavourites;
     }

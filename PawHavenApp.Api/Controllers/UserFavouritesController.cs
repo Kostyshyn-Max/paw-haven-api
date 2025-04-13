@@ -1,16 +1,15 @@
-﻿namespace PawHavenApp.Api.Controllers;
+﻿using PawHavenApp.Api.ViewModels;
 
+namespace PawHavenApp.Api.Controllers;
+
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PawHavenApp.BusinessLogic.Interfaces;
 using PawHavenApp.BusinessLogic.Models;
-using PawHavenApp.DataAccess.Entities;
-using PawHavenApp.DataAccess.Repositories;
-using System.Collections;
-using System.Security.Claims;
 
-[Route("api/[controller]")]
+[Route("api/[controller]/")]
 [ApiController]
 public class UserFavouritesController : ControllerBase
 {
@@ -24,34 +23,60 @@ public class UserFavouritesController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("get/{userId:guid}")]
-    public async Task<IEnumerable<PetCardModel>> GetAllFavouritesByUser(Guid userId)
+    [HttpGet("get")]
+    public async Task<IEnumerable<PetCardViewModel>> GetAllFavouritesByUser()
     {
-        return await userFavouritesService.GetAllFavouritesByUser(userId);
+        Guid userId = Guid.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+        var petCardEntities = await this.userFavouritesService.GetAllFavouritesByUser(userId);
+
+        List<PetCardViewModel> result = new List<PetCardViewModel>();
+        foreach (var petCard in petCardEntities)
+        {
+            var petCardViewModel = this.mapper.Map<PetCardViewModel>(petCard);
+            petCardViewModel.PetPhoto = this.mapper.Map<PetPhotoViewModel>(petCard.Photos.FirstOrDefault());
+            petCardViewModel.OwnerId = petCard.OwnerId.ToString(); // Встановлюємо OwnerId із моделі бізнес-логіки
+            result.Add(petCardViewModel);
+        }
+
+        return result;
     }
 
     [Authorize]
-    [HttpPost("like/{petCardId:int}")]
-    public async Task<ActionResult<int?>> AddToFavourites([FromRoute] int petCardId)
+    [HttpPost("like")]
+    public async Task<ActionResult<int?>> AddToFavourites([FromBody] int petCardId)
     {
         Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
-        if (await userFavouritesService.IsFavouriteExists(petCardId, userId))
+        if (await this.userFavouritesService.IsFavouriteExists(petCardId, userId))
         {
-            return BadRequest();
+            return this.BadRequest();
         }
 
         await this.userFavouritesService.CreateAsync(petCardId, userId);
-        return Ok();
+        return this.Ok();
     }
 
     [Authorize]
     [HttpDelete("unlike/{petCardId:int}")]
     public async Task<IActionResult> DeleteFromFavourites([FromRoute] int petCardId)
     {
-        Guid userId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+        Guid userId = Guid.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
 
-        await userFavouritesService.DeleteAsync(petCardId, userId);
+        await this.userFavouritesService.DeleteAsync(petCardId, userId);
 
-        return NoContent();
+        return this.Ok();
+    }
+
+    [HttpGet("is-card-saved/{petCardId:int}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<bool>> IsUserSavedCard(int petCardId)
+    {
+        if (!this.User.Identity?.IsAuthenticated ?? true)
+        {
+            return this.Ok(false);
+        }
+
+        Guid userId = Guid.Parse(this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+
+        return await this.userFavouritesService.IsFavouriteExists(petCardId, userId);
     }
 }
