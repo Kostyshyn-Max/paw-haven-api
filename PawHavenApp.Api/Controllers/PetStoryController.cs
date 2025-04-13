@@ -13,13 +13,13 @@ public class PetStoryController : ControllerBase
 {
     private readonly IMapper mapper;
     private readonly IPetStoryService petStoryService;
-    private readonly IPetPhotoService petPhotoService;
+    private readonly IS3StorageService s3StorageService;
 
-    public PetStoryController(IPetStoryService petStorySrvice, IPetPhotoService petPhotoService, IMapper mapper)
+    public PetStoryController(IPetStoryService petStorySrvice, IMapper mapper, IS3StorageService s3StorageService)
     {
         this.mapper = mapper;
         this.petStoryService = petStorySrvice;
-        this.petPhotoService = petPhotoService;
+        this.s3StorageService = s3StorageService;
     }
 
     [Authorize]
@@ -28,7 +28,7 @@ public class PetStoryController : ControllerBase
     {
         var petStoryModel = this.mapper.Map<PetStoryModel>(petStory);
         petStoryModel.AuthorId = Guid.Parse(this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
-        petStoryModel.Link = await this.petPhotoService.AddStoryPhotoAsync(petStory.Photo);
+        petStoryModel.Link = await s3StorageService.UploadFile(petStory.Photo);
         int? petStoryId = await this.petStoryService.CreatePetStoryAsync(petStoryModel);
         if (petStoryId is null)
         {
