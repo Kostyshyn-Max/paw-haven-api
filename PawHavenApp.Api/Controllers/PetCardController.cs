@@ -27,8 +27,8 @@ public class PetCardController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("add")]
-    public async Task<ActionResult> AddPetCard([FromForm] PetCardCreateModel petCard)
+    [HttpPost]
+    public async Task<ActionResult<bool>> AddPetCard([FromForm] PetCardCreateModel petCard)
     {
         var petCardModel = this.mapper.Map<PetCardModel>(petCard);
         petCardModel.OwnerId = Guid.Parse(this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
@@ -36,11 +36,11 @@ public class PetCardController : ControllerBase
         int? petCardId = await this.petCardService.CreatePetCardAsync(petCardModel);
         if (petCardId is null)
         {
-            return this.BadRequest();
+            return this.BadRequest(false);
         }
 
         await this.petPhotoService.AddCardPhotosAsync(petCard.Photos.ToList(), (int)petCardId);
-        return this.Ok();
+        return this.Ok(true);
     }
 
     [HttpGet("")]

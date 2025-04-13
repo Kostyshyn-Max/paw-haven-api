@@ -94,6 +94,7 @@ builder.Services.AddScoped<IPetPhotoService, PetPhotoService>();
 builder.Services.AddScoped<IUserFavouritesService, UserFavouriteService>();
 builder.Services.AddScoped<IOrganisationCategoryService, OrganisationCategoryService>();
 builder.Services.AddScoped<IPetTypeService, PetTypeService>();
+builder.Services.AddScoped<IHealthStatusService, HealthStatusService>();
 
 builder.Services.AddSingleton<IJwtService, JwtService>();
 
