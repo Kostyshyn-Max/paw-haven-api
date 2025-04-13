@@ -12,6 +12,8 @@ public class PetCardViewModel
 
     public string Location { get; set; }
 
+    public string OwnerId { get; set; }
+
     public PetPhotoViewModel PetPhoto { get; set; }
 
     public PetTypeModel PetType { get; set; }
