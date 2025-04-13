@@ -101,4 +101,41 @@ public class UserController : ControllerBase
 
         return this.Ok(this.mapper.Map<UserProfileViewModel>(userModel));
     }
+
+    [HttpGet("edit/{userId:guid}")]
+    public async Task<ActionResult<UserUpdateViewModel>> GetForEdit(Guid userId)
+    {
+        var userModel = await this.userService.GetUserProfile(userId);
+        if (userModel is null)
+        {
+            return this.NotFound("User profile is not found");
+        }
+
+        var updateViewModel = new UserUpdateViewModel
+        {
+            Id = userModel.Id,
+            FirstName = userModel.FirstName,
+            LastName = userModel.LastName,
+            Email = userModel.Email
+        };
+
+        return this.Ok(updateViewModel);
+    }
+
+    [HttpPut("update")]
+    public async Task<ActionResult> UpdateProfile([FromBody] UserUpdateViewModel user)
+    {
+        if (!ModelState.IsValid)
+        {
+            return this.BadRequest(ModelState);
+        }
+
+        var result = await this.userService.UpdateUserProfileAsync(this.mapper.Map<UserUpdateModel>(user));
+        if (!result)
+        {
+            return this.NotFound("User profile is not found");
+        }
+
+        return this.Ok(new { message = "Profile updated successfully" });
+    }
 }
