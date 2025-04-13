@@ -49,7 +49,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ProductionConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -94,6 +94,7 @@ builder.Services.AddScoped<IPetPhotoService, PetPhotoService>();
 builder.Services.AddScoped<IUserFavouritesService, UserFavouriteService>();
 builder.Services.AddScoped<IOrganisationCategoryService, OrganisationCategoryService>();
 builder.Services.AddScoped<IPetTypeService, PetTypeService>();
+builder.Services.AddScoped<IPetStoryService, PetStoryService>();
 builder.Services.AddScoped<IHealthStatusService, HealthStatusService>();
 
 builder.Services.AddSingleton<IJwtService, JwtService>();

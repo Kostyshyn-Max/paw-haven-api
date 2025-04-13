@@ -36,5 +36,8 @@ public class MappingProfile : Profile
         this.CreateMap<PetCardModel, PetCardDetailsViewModel>();
         this.CreateMap<UserUpdateViewModel, UserUpdateModel>();
         this.CreateMap<User, OrganisationUserModel>();
+        this.CreateMap<PetStoryCreateModel, PetStoryModel>();
+        this.CreateMap<PetStoryModel, PetStory>();
+        this.CreateMap<PetStory, PetStoryModel>();
     }
 }

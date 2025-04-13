@@ -27,7 +27,9 @@ public class PetStoryRepository : AbstractRepository, IPetStoryRepository
 
     public async Task<IEnumerable<PetStory>> GetAllAsync()
     {
-        return await this.dbSet.ToListAsync();
+        return await this.dbSet
+            .Include(p => p.User)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<PetStory>> GetAllAsync(int page, int pageSize)
