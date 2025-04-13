@@ -40,4 +40,5 @@ public class User : AbstractEntity<Guid>
     public UserRole UserRole { get; set; }
 
     public Organisation? Organisation { get; set; }
+    public ICollection<PetCard>? PetCards { get; set; } 
 }
