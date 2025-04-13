@@ -82,10 +82,9 @@ public class PetCardController : ControllerBase
         {
             return new List<PetCardViewModel>();
         }
-        
+
         var petCards = await this.petCardService.GetPetCardsByOwnerAsync(ownerGuid);
         var result = this.CollectPetCards(petCards);
-        
         return result;
     }
 
