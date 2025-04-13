@@ -6,6 +6,7 @@ using PawHavenApp.DataAccess.EF;
 using PawHavenApp.DataAccess.Entities;
 using PawHavenApp.DataAccess.Interfaces;
 using PawHavenApp.DataAccess.Repositories;
+using System.Diagnostics.CodeAnalysis;
 
 public class PetPhotoService : IPetPhotoService
 {
@@ -30,5 +31,10 @@ public class PetPhotoService : IPetPhotoService
                 PetPhotoLink = url,
             });
         }
+    }
+
+    public async Task<string?> AddStoryPhotoAsync(IFormFile photo)
+    {
+        return await this.s3StorageService.UploadFile(photo);
     }
 }
