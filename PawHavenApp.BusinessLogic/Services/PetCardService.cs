@@ -50,4 +50,13 @@ public class PetCardService : IPetCardService
 
         return this.mapper.Map<PetCardModel>(petCard);
     }
+
+    public async Task<List<PetCardModel>> GetPetCardsByOwnerAsync(Guid ownerId)
+    {
+
+        var petCardEntities = await this.petCardRepository.GetAllAsync(p => p.OwnerId == ownerId);
+        
+
+        return petCardEntities.Select(e => this.mapper.Map<PetCardModel>(e)).ToList();
+    }
 }

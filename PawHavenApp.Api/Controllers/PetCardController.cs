@@ -75,6 +75,20 @@ public class PetCardController : ControllerBase
         return this.mapper.Map<PetCardDetailsViewModel>(petCard);
     }
 
+    [HttpGet("user/{userId}")]
+    public async Task<IEnumerable<PetCardViewModel>> GetPetCardsByOwner(string userId)
+    {
+        if (!Guid.TryParse(userId, out Guid ownerGuid))
+        {
+            return new List<PetCardViewModel>();
+        }
+        
+        var petCards = await this.petCardService.GetPetCardsByOwnerAsync(ownerGuid);
+        var result = this.CollectPetCards(petCards);
+        
+        return result;
+    }
+
     private List<PetCardViewModel> CollectPetCards(List<PetCardModel> petCards)
     {
         List<PetCardViewModel> result = new List<PetCardViewModel>();
@@ -82,6 +96,7 @@ public class PetCardController : ControllerBase
         {
             var petCardViewModel = this.mapper.Map<PetCardViewModel>(petCard);
             petCardViewModel.PetPhoto = this.mapper.Map<PetPhotoViewModel>(petCard.Photos.FirstOrDefault());
+            petCardViewModel.OwnerId = petCard.OwnerId.ToString(); // Встановлюємо OwnerId із моделі бізнес-логіки
             result.Add(petCardViewModel);
         }
 
