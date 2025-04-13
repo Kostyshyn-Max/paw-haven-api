@@ -3,9 +3,9 @@ namespace PawHavenApp.DataAccess.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public abstract class AbstractEntity
+public abstract class AbstractEntity<T>
 {
     [Key]
     [Column("id")]
-    public int Id { get; set; }
+    public T Id { get; set; }
 }

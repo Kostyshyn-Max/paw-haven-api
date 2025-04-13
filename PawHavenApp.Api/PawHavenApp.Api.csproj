@@ -1,18 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>SA1600</NoWarn>
+    <UserSecretsId>df708e6b-2928-43c8-872c-59019b55f64a</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.416.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>all</PrivateAssets>
