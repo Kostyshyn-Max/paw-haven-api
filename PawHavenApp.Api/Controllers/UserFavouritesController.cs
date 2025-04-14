@@ -66,8 +66,8 @@ public class UserFavouritesController : ControllerBase
         return this.Ok();
     }
 
-    [HttpGet("is-card-saved/{petCardId:int}")]
     [AllowAnonymous]
+    [HttpGet("is-card-saved/{petCardId:int}")]
     public async Task<ActionResult<bool>> IsUserSavedCard(int petCardId)
     {
         if (!this.User.Identity?.IsAuthenticated ?? true)
