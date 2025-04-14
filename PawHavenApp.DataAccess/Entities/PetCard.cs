@@ -10,8 +10,6 @@ public class PetCard : AbstractEntity<int>
     [ForeignKey(nameof(User))]
     public Guid OwnerId { get; set; }
 
-    public User User { get; set; }
-
     [Required]
     [Column("name")]
     public string Name { get; set; } = string.Empty;
@@ -39,17 +37,19 @@ public class PetCard : AbstractEntity<int>
     [ForeignKey(nameof(HealthStatus))]
     public int HealthStatusId { get; set; }
 
-    public HealthStatus HealthStatus { get; set; }
-
     [Column("pet_type_id")]
     [ForeignKey(nameof(PetType))]
     public int PetTypeId { get; set; }
-
-    public PetType PetType { get; set; }
 
     [Required]
     [Column("views")]
     public int Views { get; set; }
 
-    public ICollection<PetPhoto> Photos { get; set; }
+    public ICollection<PetPhoto>? Photos { get; set; }
+
+    public User? User { get; set; }
+
+    public PetType? PetType { get; set; }
+
+    public HealthStatus? HealthStatus { get; set; }
 }

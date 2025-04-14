@@ -16,4 +16,6 @@ public interface IPetCardService
     Task<List<PetCardModel>> GetPetCardsByOwnerAsync(Guid ownerId);
 
     Task<bool> DeletePetCardAsync(Guid ownerId, int cardId);
+
+    Task<bool> ChangeOwnerAsync(ChangePetCardOwnerModel model);
 }
