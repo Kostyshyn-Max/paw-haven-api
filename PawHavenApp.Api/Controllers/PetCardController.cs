@@ -14,16 +14,16 @@ using PawHavenApp.DataAccess.Entities;
 public class PetCardController : ControllerBase
 {
     private readonly IPetCardService petCardService;
-
     private readonly IPetPhotoService petPhotoService;
-
     private readonly IMapper mapper;
+    private readonly ILogger<PetCardController> logger;
 
-    public PetCardController(IPetCardService petCardService, IMapper mapper, IPetPhotoService petPhotoService)
+    public PetCardController(IPetCardService petCardService, IMapper mapper, IPetPhotoService petPhotoService, ILogger<PetCardController> logger)
     {
         this.petCardService = petCardService;
         this.mapper = mapper;
         this.petPhotoService = petPhotoService;
+        this.logger = logger;
     }
 
     [Authorize]
@@ -88,6 +88,24 @@ public class PetCardController : ControllerBase
         return result;
     }
 
+    [Authorize]
+    [HttpPut("change/owner")]
+    public async Task<ActionResult> ChangePetCardOwner([FromBody] ChangePetCardOwnerModel model)
+    {
+        var result = await this.petCardService.ChangeOwnerAsync(model);
+        return result ? this.Ok() : this.BadRequest();
+    }
+
+    [Authorize]
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeletePetCard(int id)
+    {
+        Guid userId = Guid.Parse(this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
+        bool result = await this.petCardService.DeletePetCardAsync(userId, id);
+
+        return result ? this.Ok() : this.BadRequest();
+    }
+
     private List<PetCardViewModel> CollectPetCards(List<PetCardModel> petCards)
     {
         List<PetCardViewModel> result = new List<PetCardViewModel>();
@@ -95,7 +113,7 @@ public class PetCardController : ControllerBase
         {
             var petCardViewModel = this.mapper.Map<PetCardViewModel>(petCard);
             petCardViewModel.PetPhoto = this.mapper.Map<PetPhotoViewModel>(petCard.Photos.FirstOrDefault());
-            petCardViewModel.OwnerId = petCard.OwnerId.ToString(); // Встановлюємо OwnerId із моделі бізнес-логіки
+            petCardViewModel.OwnerId = petCard.OwnerId.ToString();
             result.Add(petCardViewModel);
         }
 
