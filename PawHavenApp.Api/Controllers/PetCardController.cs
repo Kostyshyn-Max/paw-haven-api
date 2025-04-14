@@ -89,13 +89,21 @@ public class PetCardController : ControllerBase
     }
 
     [Authorize]
+    [HttpPut("change/owner")]
+    public async Task<ActionResult> ChangePetCardOwner([FromBody] ChangePetCardOwnerModel model)
+    {
+        var result = await this.petCardService.ChangeOwnerAsync(model);
+        return result ? this.Ok() : this.BadRequest();
+    }
+
+    [Authorize]
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult<bool>> DeletePetCard(int id)
+    public async Task<ActionResult> DeletePetCard(int id)
     {
         Guid userId = Guid.Parse(this.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value);
         bool result = await this.petCardService.DeletePetCardAsync(userId, id);
 
-        return result ? this.Ok(result) : this.BadRequest();
+        return result ? this.Ok() : this.BadRequest();
     }
 
     private List<PetCardViewModel> CollectPetCards(List<PetCardModel> petCards)

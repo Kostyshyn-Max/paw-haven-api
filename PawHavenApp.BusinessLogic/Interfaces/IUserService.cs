@@ -12,6 +12,6 @@ public interface IUserService
     Task<UserTokenDataModel?> RefreshToken(UserTokenDataModel tokenModel);
 
     Task<UserModel?> GetUserProfile(Guid userId);
-    
+
     Task<bool> UpdateUserProfileAsync(UserUpdateModel user);
 }
